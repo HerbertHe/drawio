@@ -93,7 +93,7 @@
             var mxIsElectron = window && window.process && window.process.type
 
             // Redirects page if required
-			// 生产环境
+            // 生产环境
             if (urlParams["dev"] != "1") {
                 ;(function () {
                     var proto = window.location.protocol
@@ -157,7 +157,6 @@
              */
             function mxscript(src, onLoad, id, dataAppKey, noWrite) {
                 var defer = onLoad == null && !noWrite
-				src = "https://cdn.jsdelivr.net/gh/HerbertHe/drawio@herb/src/main/webapp/" + src
 
                 if (
                     (urlParams["dev"] != "1" &&
@@ -267,17 +266,17 @@
             var t0 = new Date()
 
             // Changes paths for local development environment
-			// 本地开发环境
+            // 本地开发环境
             if (urlParams["dev"] == "1") {
                 // Used to request grapheditor/mxgraph sources in dev mode
                 var mxDevUrl =
                     document.location.protocol +
-                    "//devhost.jgraph.com/drawio/src/main"
+                    "https://cdn.jsdelivr.net/gh/HerbertHe/drawio@herb/src/main"
 
                 // Used to request draw.io sources in dev mode
                 var drawDevUrl =
                     document.location.protocol +
-                    "//devhost.jgraph.com/drawio/src/main/webapp/"
+                    "https://cdn.jsdelivr.net/gh/HerbertHe/drawio@herb/src/main/webapp/"
                 var geBasePath = drawDevUrl + "/js/grapheditor"
                 var mxBasePath = mxDevUrl + "/mxgraph"
 
@@ -310,8 +309,11 @@
 
                 mxscript(drawDevUrl + "js/PostConfig.js")
             } else {
+                // 生产环境
                 ;(function () {
                     var hostName = window.location.hostname
+                    var cdn =
+                        "https://cdn.jsdelivr.net/gh/HerbertHe/drawio@herb/src/main/webapp/"
 
                     // Supported domains are *.draw.io and the packaged version in Quip
                     var supportedDomain =
@@ -325,29 +327,33 @@
                         ) === ".diagrams.net"
 
                     function loadAppJS() {
-                        mxscript("js/app.min.js", function () {
+                        mxscript(cdn + "js/app.min.js", function () {
                             mxScriptsLoaded = true
                             checkAllLoaded()
 
                             // Electron
                             if (mxIsElectron) {
                                 mxscript(
-                                    "js/diagramly/DesktopLibrary.js",
+                                    cdn + "js/diagramly/DesktopLibrary.js",
                                     function () {
                                         mxscript(
-                                            "js/diagramly/ElectronApp.js",
+                                            cdn + "js/diagramly/ElectronApp.js",
                                             function () {
                                                 mxscript(
-                                                    "js/extensions.min.js",
+                                                    cdn +
+                                                        "js/extensions.min.js",
                                                     function () {
                                                         mxscript(
-                                                            "js/stencils.min.js",
+                                                            cdn +
+                                                                "js/stencils.min.js",
                                                             function () {
                                                                 mxscript(
-                                                                    "js/shapes-14-6-5.min.js",
+                                                                    cdn +
+                                                                        "js/shapes-14-6-5.min.js",
                                                                     function () {
                                                                         mxscript(
-                                                                            "js/PostConfig.js"
+                                                                            cdn +
+                                                                                "js/PostConfig.js"
                                                                         )
                                                                     }
                                                                 )
@@ -360,13 +366,14 @@
                                     }
                                 )
                             } else if (!supportedDomain) {
-                                mxscript("js/PostConfig.js")
+                                mxscript(cdn + "js/PostConfig.js")
                             }
                         })
                     }
 
+                    // 非官方页面和 electron 环境检查
                     if (!supportedDomain || mxIsElectron) {
-                        mxscript("js/PreConfig.js", loadAppJS)
+                        mxscript(cdn + "js/PreConfig.js", loadAppJS)
                     } else {
                         loadAppJS()
                     }
@@ -378,8 +385,7 @@
                 var status = document.getElementById("geStatus")
 
                 if (status != null) {
-                    status.innerHTML =
-                        "Page could not be loaded. Please try refreshing."
+                    status.innerHTML = "页面未被加载! 请尝试刷新!"
                 }
             }
         </script>
@@ -492,8 +498,10 @@
                 <h1>流程图、在线图表软件</h1>
                 <p>
                     diagrams.net (原来是 draw.io) 是免费的图表软件。
-					你可以将它用作为流程图绘制、在线图标制作软件、在线绘制UML、
-					作为 ER 图工具、设计数据库方案、在线构建 BPMN、作为电路图绘制软件等等。可供导入 .vsdx、Gliffy&trade; 和 Lucidchart&trade; 文件
+                    你可以将它用作为流程图绘制、在线图标制作软件、在线绘制UML、
+                    作为 ER 图工具、设计数据库方案、在线构建
+                    BPMN、作为电路图绘制软件等等。可供导入 .vsdx、Gliffy&trade;
+                    和 Lucidchart&trade; 文件
                 </p>
                 <h2 id="geStatus">加载中...</h2>
                 <p>请确保 JavaScript 允许加载！</p>
