@@ -99,9 +99,7 @@
                     var proto = window.location.protocol
 
                     if (!mxIsElectron) {
-                        // var host = window.location.host
-						// 修改CDN位置
-						var host = "https://cdn.jsdelivr.net/gh/HerbertHe/drawio@herb/src/main/webapp"
+                        var host = window.location.host
 
                         // Redirects apex, drive and rt to www
                         if (
@@ -159,6 +157,7 @@
              */
             function mxscript(src, onLoad, id, dataAppKey, noWrite) {
                 var defer = onLoad == null && !noWrite
+				src = "https://cdn.jsdelivr.net/gh/HerbertHe/drawio@herb/src/main/webapp/" + src
 
                 if (
                     (urlParams["dev"] != "1" &&
